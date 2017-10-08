@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core" xml:lang="en" lang="en">
+<h:head>
+    <title>ERP</title>
+    <script type="application/javascript" src="/config/notify.js" />
+</h:head>
+<h:body>
+    <p:layout fullPage="true">
+
+        <p:layoutUnit position="west" style="border: 0">
+            <p:graphicImage value="/images/erp.png" width="150" height="150" style="margin-left: 30px"/>
+            <h:form>
+                <p:menu toggleable="true">
+                    <p:submenu label="Stok">
+                        <p:menuitem value="Malzeme Kaydı Yap"  icon="fa-book" />
+                        <p:menuitem value="Malzeme Listesi"  icon="fa-table"/>
+                    </p:submenu>
+                    <p:submenu label="Müşteri İlişkileri">
+                        <p:menuitem value="İncele" ajax="false" icon="fa-search"/>
+                    </p:submenu>
+                    <p:submenu label="Zaman Yönetimi">
+                        <p:menuitem value="Zaman Takvimi" url="#" icon="fa-th-list"/>
+                    </p:submenu>
+                </p:menu>
+            </h:form>
+        </p:layoutUnit>
+
+        <p:layoutUnit position="center" style="border:0">
+            <h:form>
+                <p:menubar >
+                    <p:menuitem value="YD MÜHENDİSLİK ERP YAZILIMI"/>
+                    <f:facet name="options">
+                        <p:button value="Logout" href="/pages/j_spring_security_logout"/>
+                    </f:facet>
+                </p:menubar>
+            </h:form>
+
+        </p:layoutUnit>
+
+    </p:layout>
+</h:body>
+
+<c:if test="${param.status!='error'}">
+    <script type="application/javascript">
+        $.notify("Login successfully!","success");
+    </script>
+</c:if>
+
+</html>
