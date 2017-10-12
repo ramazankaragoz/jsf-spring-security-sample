@@ -11,20 +11,23 @@
 </h:head>
 <h:body>
     <p:layout fullPage="true">
+        <p:layoutUnit position="west" style="border: 0">
+            <p:graphicImage value="/images/erp.png" width="150" height="150" style="margin-left: 30px"/>
+            <h:form>
+                    <p:menu toggleable="true" model="#{menuView.model}">
+                    </p:menu>
+            </h:form>
+        </p:layoutUnit>
 
-        <ui:insert name="footer">
-            <ui:include src="/pages/common-menu.xhtml"/>
-        </ui:insert>
         <ui:insert name="header">
             <ui:include src="/pages/common-header.xhtml"/>
         </ui:insert>
 
-
-        <ui:insert name="content" id="content">
-            <p:layoutUnit position="center" id="centerPanel">
-                <ui:include src="#{menuView.url}"/>
-            </p:layoutUnit>
-        </ui:insert>
+        <p:layoutUnit position="center">
+            <h:form id="content">
+            <ui:include src="#{menuView.url}"/>
+            </h:form>
+        </p:layoutUnit>
 
     </p:layout>
 </h:body>

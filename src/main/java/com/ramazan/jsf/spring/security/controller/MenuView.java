@@ -1,6 +1,7 @@
 package com.ramazan.jsf.spring.security.controller;
 
 import com.ramazan.jsf.spring.security.domain.MenuProperties;
+import com.sun.faces.component.visit.FullVisitContext;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.MenuActionEvent;
 import org.primefaces.model.menu.*;
@@ -10,8 +11,14 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIViewRoot;
+import javax.faces.component.visit.VisitCallback;
+import javax.faces.component.visit.VisitContext;
+import javax.faces.component.visit.VisitResult;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +27,12 @@ import java.util.List;
  */
 @Component
 @Scope("session")
-public class MenuView {
+public class MenuView implements Serializable{
 
     private MenuModel model;
     private String url;
     private List<MenuProperties> menuList;
+    private DefaultMenuItem item;
 
     @PostConstruct
     public void init() {
@@ -40,9 +48,11 @@ public class MenuView {
         for (MenuProperties menuProperties : menuList)
         {
             DefaultSubMenu firstSubmenu = new DefaultSubMenu(menuProperties.getName());
-            DefaultMenuItem item = new DefaultMenuItem(menuProperties.getSubMenu());
+            item = new DefaultMenuItem(menuProperties.getSubMenu());
             item.setCommand("#{menuView.sa}");
             url=menuProperties.getUrl();
+            //item.setUrl(url);
+            item.setUpdate(":content");
             firstSubmenu.addElement(item);
             model.addElement(firstSubmenu);
         }
@@ -55,8 +65,37 @@ public class MenuView {
             if (menuProperties.getSubMenu().equals(event.getMenuItem().getValue().toString()))
             {
                 setUrl(menuProperties.getUrl());
+                //UIComponent component=findComponent("centerPanel");
+                //RequestContext.getCurrentInstance().update("content");
+                /*try {
+                    component.encodeAll(FacesContext.getCurrentInstance());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }*/
+
             }
         }
+    }
+
+    public UIComponent findComponent(final String id) {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        UIViewRoot root = context.getViewRoot();
+        final UIComponent[] found = new UIComponent[1];
+
+        root.visitTree(new FullVisitContext(context), new VisitCallback() {
+            @Override
+            public VisitResult visit(VisitContext context, UIComponent component) {
+                if(component.getId().equals(id)){
+                    found[0] = component;
+                    return VisitResult.COMPLETE;
+                }
+                return VisitResult.ACCEPT;
+            }
+        });
+
+        return found[0];
+
     }
 
     public MenuModel getModel() {
