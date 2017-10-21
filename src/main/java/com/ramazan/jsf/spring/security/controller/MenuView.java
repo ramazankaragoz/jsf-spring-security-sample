@@ -41,9 +41,11 @@ public class MenuView implements Serializable{
         //dummy menu
         MenuProperties menu = new MenuProperties("Stok", "/pages/material-list.xhtml", "Malzeme Listesi");
         MenuProperties menu2 = new MenuProperties("Hello", "/pages/hello.xhtml", "Hello");
+        MenuProperties menu3 = new MenuProperties("CRM", "/pages/crm.xhtml", "crm");
         menuList = new ArrayList<>();
         menuList.add(menu);
         menuList.add(menu2);
+        menuList.add(menu3);
 
         for (MenuProperties menuProperties : menuList)
         {
